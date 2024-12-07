@@ -6,6 +6,6 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     StudentManagerSys w;
-    w.showLogin();
+    w.show();
     return a.exec();
 }

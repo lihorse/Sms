@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_StudentManagerSys_t {
-    QByteArrayData data[5];
-    char stringdata0[50];
+    QByteArrayData data[6];
+    char stringdata0[56];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,11 +36,12 @@ QT_MOC_LITERAL(0, 0, 17), // "StudentManagerSys"
 QT_MOC_LITERAL(1, 18, 12), // "onlogincheck"
 QT_MOC_LITERAL(2, 31, 0), // ""
 QT_MOC_LITERAL(3, 32, 8), // "username"
-QT_MOC_LITERAL(4, 41, 8) // "password"
+QT_MOC_LITERAL(4, 41, 8), // "password"
+QT_MOC_LITERAL(5, 50, 5) // "level"
 
     },
     "StudentManagerSys\0onlogincheck\0\0"
-    "username\0password"
+    "username\0password\0level"
 };
 #undef QT_MOC_LITERAL
 
@@ -58,10 +59,10 @@ static const uint qt_meta_data_StudentManagerSys[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    2,   19,    2, 0x08 /* Private */,
+       1,    3,   19,    2, 0x08 /* Private */,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::QString, QMetaType::QString,    3,    4,
+    QMetaType::Void, QMetaType::QString, QMetaType::QString, QMetaType::Int,    3,    4,    5,
 
        0        // eod
 };
@@ -72,7 +73,7 @@ void StudentManagerSys::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         auto *_t = static_cast<StudentManagerSys *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->onlogincheck((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 0: _t->onlogincheck((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const int(*)>(_a[3]))); break;
         default: ;
         }
     }

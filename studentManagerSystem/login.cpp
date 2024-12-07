@@ -15,13 +15,31 @@ login::~login()
     delete ui;
 }
 
-void login::on_pushButton_clicked()
+void login::loginInputClear()
 {
-    bool ret = false;
-    emit siglogincheck("123","123");
+    ui->username->clear();
+    ui->password->clear();
+}
 
-    if(ret)
+void login::on_btn_log_clicked()
+{
+    QString usrname = ui->username->text();
+    QString passwd = ui->password->text();
+    if(ui->manager_check->isChecked())
     {
-        qDebug()<<ret;
+        emit siglogincheck(usrname,passwd,1);
+        qDebug("选择");
     }
+    else
+    {
+        emit siglogincheck(usrname,passwd,2);
+        qDebug("未选择");
+    }
+
+
+}
+
+void login::on_btn_clr_clicked()
+{
+    this->loginInputClear();
 }
