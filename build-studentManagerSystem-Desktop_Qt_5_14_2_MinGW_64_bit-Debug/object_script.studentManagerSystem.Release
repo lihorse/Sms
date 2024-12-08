@@ -1,0 +1,11 @@
+release/DBOBase.o
+release/MysqlDBO.o
+release/flatui.o
+release/login.o
+release/main.o
+release/progressround.o
+release/studentmanagersys.o
+release/moc_flatui.o
+release/moc_login.o
+release/moc_progressround.o
+release/moc_studentmanagersys.o

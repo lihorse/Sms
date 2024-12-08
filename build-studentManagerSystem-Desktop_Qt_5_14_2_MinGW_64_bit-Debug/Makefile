@@ -225,7 +225,6 @@ Makefile: ../studentManagerSystem/studentManagerSystem.pro E:/QT/5.14.2/mingw73_
 		E:/QT/5.14.2/mingw73_64/mkspecs/features/qt_config.prf \
 		E:/QT/5.14.2/mingw73_64/mkspecs/win32-g++/qmake.conf \
 		E:/QT/5.14.2/mingw73_64/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		E:/QT/5.14.2/mingw73_64/mkspecs/features/exclusive_builds.prf \
 		E:/QT/5.14.2/mingw73_64/mkspecs/features/toolchain.prf \
 		E:/QT/5.14.2/mingw73_64/mkspecs/features/default_pre.prf \
@@ -255,6 +254,7 @@ Makefile: ../studentManagerSystem/studentManagerSystem.pro E:/QT/5.14.2/mingw73_
 		E:/QT/5.14.2/mingw73_64/lib/Qt5Sql.prl \
 		E:/QT/5.14.2/mingw73_64/lib/Qt5Core.prl \
 		E:/QT/5.14.2/mingw73_64/lib/qtmain.prl \
+		.qmake.stash \
 		E:/QT/5.14.2/mingw73_64/mkspecs/features/build_pass.prf
 	$(QMAKE) -o Makefile ..\studentManagerSystem\studentManagerSystem.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 E:/QT/5.14.2/mingw73_64/mkspecs/features/spec_pre.prf:
@@ -412,7 +412,6 @@ E:/QT/5.14.2/mingw73_64/mkspecs/features/qt_functions.prf:
 E:/QT/5.14.2/mingw73_64/mkspecs/features/qt_config.prf:
 E:/QT/5.14.2/mingw73_64/mkspecs/win32-g++/qmake.conf:
 E:/QT/5.14.2/mingw73_64/mkspecs/features/spec_post.prf:
-.qmake.stash:
 E:/QT/5.14.2/mingw73_64/mkspecs/features/exclusive_builds.prf:
 E:/QT/5.14.2/mingw73_64/mkspecs/features/toolchain.prf:
 E:/QT/5.14.2/mingw73_64/mkspecs/features/default_pre.prf:
@@ -442,6 +441,7 @@ E:/QT/5.14.2/mingw73_64/lib/Qt5Gui.prl:
 E:/QT/5.14.2/mingw73_64/lib/Qt5Sql.prl:
 E:/QT/5.14.2/mingw73_64/lib/Qt5Core.prl:
 E:/QT/5.14.2/mingw73_64/lib/qtmain.prl:
+.qmake.stash:
 E:/QT/5.14.2/mingw73_64/mkspecs/features/build_pass.prf:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\studentManagerSystem\studentManagerSystem.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"

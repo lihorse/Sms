@@ -25,6 +25,7 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QWidget>
+#include "progressround.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -65,6 +66,9 @@ public:
     QDateEdit *dateEdit;
     QSpinBox *grade;
     QWidget *page_5;
+    QComboBox *statsCb;
+    QPushButton *pushButton_9;
+    ProgressRound *progressRound5;
     QWidget *page_2;
     QTableWidget *tableWidget_2;
     QLineEdit *lineEdit;
@@ -201,6 +205,15 @@ public:
         stackedWidget->addWidget(page_4);
         page_5 = new QWidget();
         page_5->setObjectName(QString::fromUtf8("page_5"));
+        statsCb = new QComboBox(page_5);
+        statsCb->setObjectName(QString::fromUtf8("statsCb"));
+        statsCb->setGeometry(QRect(40, 30, 141, 22));
+        pushButton_9 = new QPushButton(page_5);
+        pushButton_9->setObjectName(QString::fromUtf8("pushButton_9"));
+        pushButton_9->setGeometry(QRect(210, 30, 75, 23));
+        progressRound5 = new ProgressRound(page_5);
+        progressRound5->setObjectName(QString::fromUtf8("progressRound5"));
+        progressRound5->setGeometry(QRect(200, 150, 150, 101));
         stackedWidget->addWidget(page_5);
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
@@ -281,7 +294,7 @@ public:
 
         retranslateUi(StudentManagerSys);
 
-        stackedWidget->setCurrentIndex(2);
+        stackedWidget->setCurrentIndex(3);
 
 
         QMetaObject::connectSlotsByName(StudentManagerSys);
@@ -326,6 +339,7 @@ public:
 
         label->setText(QCoreApplication::translate("StudentManagerSys", "\346\237\245\350\257\242\346\226\271\345\274\217\357\274\232", nullptr));
         dateEdit->setDisplayFormat(QCoreApplication::translate("StudentManagerSys", "yyyy-M-d", nullptr));
+        pushButton_9->setText(QCoreApplication::translate("StudentManagerSys", "PushButton", nullptr));
         lineEdit->setPlaceholderText(QCoreApplication::translate("StudentManagerSys", "\350\257\276\347\250\213\345\220\215", nullptr));
         lineEdit_2->setPlaceholderText(QCoreApplication::translate("StudentManagerSys", "\350\257\276\347\250\213\345\217\267", nullptr));
         lineEdit_3->setPlaceholderText(QCoreApplication::translate("StudentManagerSys", "\350\200\201\345\270\210\345\220\215", nullptr));
