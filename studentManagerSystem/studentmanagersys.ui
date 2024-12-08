@@ -39,7 +39,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="page_1">
      <widget class="QTableWidget" name="tableWidget">
@@ -261,7 +261,7 @@
      </widget>
     </widget>
     <widget class="QWidget" name="page_4">
-     <widget class="QTableWidget" name="tableWidget_4">
+     <widget class="QTableWidget" name="gradeTbWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -271,7 +271,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_7">
+     <widget class="QLineEdit" name="studentID">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -281,10 +281,13 @@
        </rect>
       </property>
       <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
        <string>学号</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_8">
+     <widget class="QLineEdit" name="studentName">
       <property name="geometry">
        <rect>
         <x>160</x>
@@ -294,10 +297,13 @@
        </rect>
       </property>
       <property name="text">
-       <string>姓名</string>
+       <string/>
+      </property>
+      <property name="placeholderText">
+       <string>学生姓名</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_9">
+     <widget class="QLineEdit" name="className">
       <property name="geometry">
        <rect>
         <x>280</x>
@@ -307,33 +313,16 @@
        </rect>
       </property>
       <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
        <string>课程名</string>
       </property>
      </widget>
-     <widget class="QDateTimeEdit" name="dateTimeEdit">
+     <widget class="QPushButton" name="btnGradeGet">
       <property name="geometry">
        <rect>
-        <x>410</x>
-        <y>30</y>
-        <width>161</width>
-        <height>22</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEdit_10">
-      <property name="geometry">
-       <rect>
-        <x>580</x>
-        <y>30</y>
-        <width>113</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_13">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
+        <x>230</x>
         <y>60</y>
         <width>75</width>
         <height>23</height>
@@ -343,10 +332,10 @@
        <string>查询</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_14">
+     <widget class="QPushButton" name="btnGradeUpdate">
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>340</x>
         <y>60</y>
         <width>75</width>
         <height>23</height>
@@ -356,10 +345,10 @@
        <string>修改</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_15">
+     <widget class="QPushButton" name="btnGradeAdd">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>440</x>
         <y>60</y>
         <width>75</width>
         <height>23</height>
@@ -369,10 +358,10 @@
        <string>增加</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_16">
+     <widget class="QPushButton" name="btnGradeDel">
       <property name="geometry">
        <rect>
-        <x>310</x>
+        <x>580</x>
         <y>60</y>
         <width>75</width>
         <height>23</height>
@@ -380,6 +369,90 @@
       </property>
       <property name="text">
        <string>删除</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="gradeCb">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>60</y>
+        <width>141</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>全部</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>按学号</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>按学生姓名</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>按课程姓名</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>按考试时间</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>70</y>
+        <width>54</width>
+        <height>12</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>查询方式：</string>
+      </property>
+     </widget>
+     <widget class="QDateEdit" name="dateEdit">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>30</y>
+        <width>110</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="dateTime">
+       <datetime>
+        <hour>0</hour>
+        <minute>0</minute>
+        <second>0</second>
+        <year>2024</year>
+        <month>12</month>
+        <day>8</day>
+       </datetime>
+      </property>
+      <property name="displayFormat">
+       <string>yyyy-M-d</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="grade">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>30</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="maximum">
+       <number>100</number>
       </property>
      </widget>
     </widget>

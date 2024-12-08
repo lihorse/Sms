@@ -23,7 +23,7 @@ StudentManagerSys::StudentManagerSys(QWidget *parent)
         db_server_port = 3306;
     }
     this->dataBaseInit();
-    this->InitForm();
+    this->InitForm();/*调试*/
 }
 
 StudentManagerSys::~StudentManagerSys()
@@ -52,10 +52,10 @@ void StudentManagerSys::dataBaseInit()
 
 void StudentManagerSys::InitForm()
 {
-    this->menuBtnInit(userLevel);
-    this->studentViewInit(userLevel);
-    this->classViewInit(userLevel);
-
+    this->menuBtnInit(this->userlevel);
+    this->studentViewInit(this->userlevel);
+    this->classViewInit(this->userlevel);
+    this->gradeViewInit(this->userlevel);
 }
 
 void StudentManagerSys::menuBtnInit(int level)
@@ -217,7 +217,7 @@ void StudentManagerSys::onlogincheck(const QString &username, const QString &pas
     ret = db->FindCount("user",QString("WHERE username = '%1' AND password = '%2' AND level='%3';").arg(username).arg(password).arg(level));
     switch (level) {
     case 1: msg = "管理员用户";break;
-    case 2: msg="普通用户";break;
+    case 2: msg = "普通用户";break;
     default:
         msg = "普通用户";
         break;
@@ -225,6 +225,8 @@ void StudentManagerSys::onlogincheck(const QString &username, const QString &pas
 
     if(ret > 0){
         QMessageBox::warning(nullptr, "info", QString("%1登陆成功").arg(msg));
+        this->userlevel = level;
+        this->InitForm();
         login_t->hide();
         this->show();
     }
@@ -235,27 +237,31 @@ void StudentManagerSys::onlogincheck(const QString &username, const QString &pas
 }
 
 
-void StudentManagerSys::on_btn1_clicked()
+void StudentManagerSys::on_btn1_clicked()/*学生信息界面*/
 {
     ui->stackedWidget->setCurrentIndex(0);
+    this->studentInfoShow();
 }
 
-void StudentManagerSys::on_btn2_clicked()
+void StudentManagerSys::on_btn2_clicked()/*课程信息界面*/
 {
     ui->stackedWidget->setCurrentIndex(1);
+    this->classInfoShow();
 }
 
-void StudentManagerSys::on_btn3_clicked()
+void StudentManagerSys::on_btn3_clicked()/*成绩显示界面*/
 {
     ui->stackedWidget->setCurrentIndex(2);
+    QList<QVariantList> list = this->getGradeDataFromDB(totalMode,0,NULL,NULL,NULL);
+    this->gradeInfoShow(list);
 }
 
-void StudentManagerSys::on_btn4_clicked()
+void StudentManagerSys::on_btn4_clicked()/*成绩统计界面*/
 {
     ui->stackedWidget->setCurrentIndex(3);
 }
 
-void StudentManagerSys::on_btn5_clicked()
+void StudentManagerSys::on_btn5_clicked()/*用户编辑界面*/
 {
     ui->stackedWidget->setCurrentIndex(4);
 }
@@ -371,7 +377,21 @@ bool StudentManagerSys::findClassInfoFromDB(int classID, QString className, QStr
 
     return true;
 }
+bool StudentManagerSys::findClassInfoFromDB(QString className)
+{
+    QString sql;
+    int ret;
+    sql = QString("WHERE name='%1';").arg(className);
 
+    ret = db->FindCount("class",sql);
+
+    if(ret <= 0)
+    {
+        return false;
+    }
+
+    return true;
+}
 bool StudentManagerSys::deleteClassInfoToDB(int classID, QString className, QString teacherName)
 {
     /*先查找此人存在*/
@@ -486,5 +506,273 @@ void StudentManagerSys::on_btnClassGet_clicked()
     else
     {
         QMessageBox::warning(this,"info","有这个课程");
+    }
+}
+
+
+void StudentManagerSys::gradeViewInit(int level)
+{
+    if(level == administrator)
+    {
+        ui->btnGradeAdd->setEnabled(true);
+        ui->btnGradeDel->setEnabled(true);
+        ui->btnGradeUpdate->setEnabled(true);
+    }
+    else
+    {
+        ui->btnGradeAdd->setEnabled(false);
+        ui->btnGradeDel->setEnabled(false);
+        ui->btnGradeUpdate->setEnabled(false);
+    }
+
+    //设置列数和列宽
+    int width = qApp->desktop()->availableGeometry().width() - 120;
+    ui->gradeTbWidget->setColumnCount(5);
+    ui->gradeTbWidget->setColumnWidth(0, width * 0.06);
+    ui->gradeTbWidget->setColumnWidth(1, width * 0.10);
+    ui->gradeTbWidget->setColumnWidth(2, width * 0.06);
+    ui->gradeTbWidget->setColumnWidth(3, width * 0.20);
+    ui->gradeTbWidget->setColumnWidth(4, width * 0.20);
+    ui->gradeTbWidget->verticalHeader()->setDefaultSectionSize(25);
+
+    QStringList headText;
+    headText << "学号" << "学生姓名" << "课程名" << "考试成绩" << "考试时间";
+    ui->gradeTbWidget->setHorizontalHeaderLabels(headText);
+    ui->gradeTbWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->gradeTbWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->gradeTbWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->gradeTbWidget->setAlternatingRowColors(true);
+    ui->gradeTbWidget->verticalHeader()->setVisible(false);
+    ui->gradeTbWidget->horizontalHeader()->setStretchLastSection(true);
+
+    //设置行高
+    ui->gradeTbWidget->setRowCount(300);
+    QList<QVariantList> list = this->getGradeDataFromDB();
+    this->gradeInfoShow(list);
+
+}
+
+void StudentManagerSys::gradeInfoShow(QList<QVariantList> list)
+{
+    int i = 0;
+    ui->gradeTbWidget->clearContents();
+    for(auto item:list)
+    {
+        ui->gradeTbWidget->setRowHeight(i, 24);
+
+        QTableWidgetItem *studentID = new QTableWidgetItem(item.at(0).toString());
+        QTableWidgetItem *studentName = new QTableWidgetItem(item.at(1).toString());
+        QTableWidgetItem *className = new QTableWidgetItem(item.at(2).toString());
+        QTableWidgetItem *date = new QTableWidgetItem(item.at(3).toString());
+        QTableWidgetItem *grade = new QTableWidgetItem(item.at(4).toString());
+
+        ui->gradeTbWidget->setItem(i, 0, studentID);
+        ui->gradeTbWidget->setItem(i, 1, studentName);
+        ui->gradeTbWidget->setItem(i, 2, className);
+        ui->gradeTbWidget->setItem(i, 3, date);
+        ui->gradeTbWidget->setItem(i, 4, grade);
+        i++;
+    }
+}
+
+QList<QVariantList> StudentManagerSys::getGradeDataFromDB(enum findGradeMode mode,int studentID, QString studentName, QString className, QString date)
+{
+    QString stropt,strwhere;
+    //QString strSql = QString("SELECT %1 FROM %2 %3").arg(tmpOption).arg(tabName).arg(strWhere);
+    if(mode == totalMode)
+    {
+       stropt = QString("*");
+        strwhere.clear();
+    }
+    else if(mode == studentIDMode)
+    {
+        stropt = QString("*");
+        strwhere = QString("WHERE id='%1';").arg(studentID);
+    }
+    else if(mode == studentNameMode)
+    {
+        stropt = QString("*");
+        strwhere = QString("WHERE name='%1';").arg(studentName);
+    }
+    else if(mode == classNameMode)
+    {
+        stropt = QString("*");
+        strwhere = QString("WHERE class_name='%1';").arg(className);
+    }
+    else if(mode == dateMode)
+    {
+        stropt = QString("*");
+        strwhere = QString("WHERE date='%1';").arg(date);
+    }
+    else
+    {
+        stropt = QString("*");
+        strwhere.clear();
+    }
+
+    return db->GetDatas("grade",stropt,strwhere);
+}
+
+QList<QVariantList> StudentManagerSys::getGradeDataFromDB()
+{
+    return db->GetDatas("grade","*",NULL);
+}
+bool StudentManagerSys::findGradeInfoFromDB(int studentID, QString studentName, QString className, QString date, double grade)
+{
+    QString sql;
+    int ret;
+    sql = QString("WHERE id='%1' AND name='%2' AND class_name='%3' AND grade='%4' AND date='%5';").arg(studentID).arg(studentName).arg(className).arg(date).arg(grade);
+
+    ret = db->FindCount("grade",sql);
+
+    if(ret == 0)
+    {
+        return false;
+    }
+
+    return true;
+}
+bool StudentManagerSys::findGradeInfoFromDB(int studentID, QString studentName, QString className)
+{
+    QString sql;
+    int ret;
+    sql = QString("WHERE id='%1' AND name='%2' AND class_name='%3';").arg(studentID).arg(studentName).arg(className);
+
+    ret = db->FindCount("grade",sql);
+
+    if(ret == 0)
+    {
+        return false;
+    }
+
+    return true;
+}
+bool StudentManagerSys::deleteGradeInfoToDB(int studentID, QString studentName, QString className, QString date, double grade)
+{
+    if(!this->findGradeInfoFromDB(ui->studentID->text().toInt(),ui->studentName->text(),ui->className->text()))
+    {
+        QMessageBox::warning(this,"info","此成绩信息不存在");
+        return false;
+    }
+
+    return db->DeleteData("grade",QString("WHERE id='%1' AND class_name='%2';").arg(studentID).arg(className));
+}
+
+bool StudentManagerSys::updateGradeInfoToDB(int studentID, QString studentName, QString className, QString date, double grade)
+{
+    QStringList     qslist;
+    QVariantList    qvlist;
+    QString         strwhere;
+
+    /*先查找此人存在*/
+    if(!this->findGradeInfoFromDB(studentID,studentName,className))
+    {
+        qDebug("修改错误");
+        return false;
+    }
+
+    qslist.append("id");
+    qslist.append("name");
+    qslist.append("class_name");
+    qslist.append("grade");
+    qslist.append("date");
+
+
+    qvlist.append(QString::number(studentID));
+    qvlist.append(studentName);
+    qvlist.append(className);
+    qvlist.append(grade);
+    qvlist.append(date);
+
+    strwhere = QString("WHERE id='%1' AND name='%2' AND class_name='%3';").arg(studentID).arg(studentName).arg(className);
+
+
+    return db->UpdateData("grade",qslist,qvlist,strwhere);
+}
+
+bool StudentManagerSys::addGradeInfoToDB(int studentID, QString studentName, QString className, QString date, double grade)
+{
+    QStringList     qslist;
+    QVariantList    qvlist;
+
+    if(this->findGradeInfoFromDB(ui->studentID->text().toInt(),ui->studentName->text(),ui->className->text()))
+    {
+        QMessageBox::warning(this,"info","此成绩信息已经存在");
+        return false;
+    }
+    /*先查找此人存在*/
+    if(this->findClassInfoFromDB(ui->lEditClassID->text().toInt(),NULL,NULL))
+    {
+        qDebug("课程信息已经存在");
+        return false;
+    }
+
+    if(!this->findStudentInfoFromDB(studentID,studentName,NULL))
+    {
+        QMessageBox::warning(this,"info","学生信息不存在");
+        return false;
+    }
+
+    if(!this->findClassInfoFromDB(className))
+    {
+        QMessageBox::warning(this,"info","课程不存在");
+        return false;
+    }
+    qslist.append("id");
+    qslist.append("name");
+    qslist.append("class_name");
+    qslist.append("grade");
+    qslist.append("date");
+
+
+    qvlist.append(QString::number(studentID));
+    qvlist.append(studentName);
+    qvlist.append(className);
+    qvlist.append(grade);
+    qvlist.append(date);
+
+    return db->AppendDataCustom("grade",qslist,qvlist);
+}
+
+void StudentManagerSys::on_btnGradeGet_clicked()
+{
+
+    enum findGradeMode getGradeMode;
+
+    getGradeMode = (enum findGradeMode)ui->gradeCb->currentIndex();
+    qDebug()<<getGradeMode;
+
+    QList<QVariantList> list = this->getGradeDataFromDB(getGradeMode,ui->studentID->text().toInt(),ui->studentName->text(),ui->className->text(),ui->dateEdit->text());
+    qDebug()<<list;
+
+    this->gradeInfoShow(list);
+}
+
+void StudentManagerSys::on_btnGradeUpdate_clicked()
+{
+    if(this->updateGradeInfoToDB(ui->studentID->text().toInt(),ui->studentName->text(),ui->className->text(),ui->dateEdit->text(),ui->grade->text().toDouble()))
+    {
+        QList<QVariantList> list = this->getGradeDataFromDB();
+        this->gradeInfoShow(list);
+    }
+}
+
+void StudentManagerSys::on_btnGradeAdd_clicked()
+{
+
+    if(this->addGradeInfoToDB(ui->studentID->text().toInt(),ui->studentName->text(),ui->className->text(),ui->dateEdit->text(),ui->grade->text().toDouble()))
+    {
+        QList<QVariantList> list = this->getGradeDataFromDB();
+        this->gradeInfoShow(list);
+    }
+
+}
+
+void StudentManagerSys::on_btnGradeDel_clicked()
+{
+    if(this->deleteGradeInfoToDB(ui->studentID->text().toInt(),ui->studentName->text(),ui->className->text(),ui->dateEdit->text(),ui->grade->text().toDouble()))
+    {
+        QList<QVariantList> list = this->getGradeDataFromDB();
+        this->gradeInfoShow(list);
     }
 }

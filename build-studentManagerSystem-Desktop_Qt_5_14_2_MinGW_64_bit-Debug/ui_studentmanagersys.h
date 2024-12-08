@@ -12,13 +12,15 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QDateTimeEdit>
+#include <QtWidgets/QDateEdit>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableWidget>
@@ -50,16 +52,18 @@ public:
     QPushButton *btnClassGet;
     QLineEdit *lEditClassID;
     QWidget *page_4;
-    QTableWidget *tableWidget_4;
-    QLineEdit *lineEdit_7;
-    QLineEdit *lineEdit_8;
-    QLineEdit *lineEdit_9;
-    QDateTimeEdit *dateTimeEdit;
-    QLineEdit *lineEdit_10;
-    QPushButton *pushButton_13;
-    QPushButton *pushButton_14;
-    QPushButton *pushButton_15;
-    QPushButton *pushButton_16;
+    QTableWidget *gradeTbWidget;
+    QLineEdit *studentID;
+    QLineEdit *studentName;
+    QLineEdit *className;
+    QPushButton *btnGradeGet;
+    QPushButton *btnGradeUpdate;
+    QPushButton *btnGradeAdd;
+    QPushButton *btnGradeDel;
+    QComboBox *gradeCb;
+    QLabel *label;
+    QDateEdit *dateEdit;
+    QSpinBox *grade;
     QWidget *page_5;
     QWidget *page_2;
     QTableWidget *tableWidget_2;
@@ -151,36 +155,49 @@ public:
         stackedWidget->addWidget(page_3);
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        tableWidget_4 = new QTableWidget(page_4);
-        tableWidget_4->setObjectName(QString::fromUtf8("tableWidget_4"));
-        tableWidget_4->setGeometry(QRect(10, 90, 691, 331));
-        lineEdit_7 = new QLineEdit(page_4);
-        lineEdit_7->setObjectName(QString::fromUtf8("lineEdit_7"));
-        lineEdit_7->setGeometry(QRect(30, 30, 113, 20));
-        lineEdit_8 = new QLineEdit(page_4);
-        lineEdit_8->setObjectName(QString::fromUtf8("lineEdit_8"));
-        lineEdit_8->setGeometry(QRect(160, 30, 113, 20));
-        lineEdit_9 = new QLineEdit(page_4);
-        lineEdit_9->setObjectName(QString::fromUtf8("lineEdit_9"));
-        lineEdit_9->setGeometry(QRect(280, 30, 113, 20));
-        dateTimeEdit = new QDateTimeEdit(page_4);
-        dateTimeEdit->setObjectName(QString::fromUtf8("dateTimeEdit"));
-        dateTimeEdit->setGeometry(QRect(410, 30, 161, 22));
-        lineEdit_10 = new QLineEdit(page_4);
-        lineEdit_10->setObjectName(QString::fromUtf8("lineEdit_10"));
-        lineEdit_10->setGeometry(QRect(580, 30, 113, 20));
-        pushButton_13 = new QPushButton(page_4);
-        pushButton_13->setObjectName(QString::fromUtf8("pushButton_13"));
-        pushButton_13->setGeometry(QRect(30, 60, 75, 23));
-        pushButton_14 = new QPushButton(page_4);
-        pushButton_14->setObjectName(QString::fromUtf8("pushButton_14"));
-        pushButton_14->setGeometry(QRect(120, 60, 75, 23));
-        pushButton_15 = new QPushButton(page_4);
-        pushButton_15->setObjectName(QString::fromUtf8("pushButton_15"));
-        pushButton_15->setGeometry(QRect(210, 60, 75, 23));
-        pushButton_16 = new QPushButton(page_4);
-        pushButton_16->setObjectName(QString::fromUtf8("pushButton_16"));
-        pushButton_16->setGeometry(QRect(310, 60, 75, 23));
+        gradeTbWidget = new QTableWidget(page_4);
+        gradeTbWidget->setObjectName(QString::fromUtf8("gradeTbWidget"));
+        gradeTbWidget->setGeometry(QRect(10, 90, 691, 331));
+        studentID = new QLineEdit(page_4);
+        studentID->setObjectName(QString::fromUtf8("studentID"));
+        studentID->setGeometry(QRect(30, 30, 113, 20));
+        studentName = new QLineEdit(page_4);
+        studentName->setObjectName(QString::fromUtf8("studentName"));
+        studentName->setGeometry(QRect(160, 30, 113, 20));
+        className = new QLineEdit(page_4);
+        className->setObjectName(QString::fromUtf8("className"));
+        className->setGeometry(QRect(280, 30, 113, 20));
+        btnGradeGet = new QPushButton(page_4);
+        btnGradeGet->setObjectName(QString::fromUtf8("btnGradeGet"));
+        btnGradeGet->setGeometry(QRect(230, 60, 75, 23));
+        btnGradeUpdate = new QPushButton(page_4);
+        btnGradeUpdate->setObjectName(QString::fromUtf8("btnGradeUpdate"));
+        btnGradeUpdate->setGeometry(QRect(340, 60, 75, 23));
+        btnGradeAdd = new QPushButton(page_4);
+        btnGradeAdd->setObjectName(QString::fromUtf8("btnGradeAdd"));
+        btnGradeAdd->setGeometry(QRect(440, 60, 75, 23));
+        btnGradeDel = new QPushButton(page_4);
+        btnGradeDel->setObjectName(QString::fromUtf8("btnGradeDel"));
+        btnGradeDel->setGeometry(QRect(580, 60, 75, 23));
+        gradeCb = new QComboBox(page_4);
+        gradeCb->addItem(QString());
+        gradeCb->addItem(QString());
+        gradeCb->addItem(QString());
+        gradeCb->addItem(QString());
+        gradeCb->addItem(QString());
+        gradeCb->setObjectName(QString::fromUtf8("gradeCb"));
+        gradeCb->setGeometry(QRect(80, 60, 141, 22));
+        label = new QLabel(page_4);
+        label->setObjectName(QString::fromUtf8("label"));
+        label->setGeometry(QRect(20, 70, 54, 12));
+        dateEdit = new QDateEdit(page_4);
+        dateEdit->setObjectName(QString::fromUtf8("dateEdit"));
+        dateEdit->setGeometry(QRect(430, 30, 110, 22));
+        dateEdit->setDateTime(QDateTime(QDate(2024, 12, 8), QTime(0, 0, 0)));
+        grade = new QSpinBox(page_4);
+        grade->setObjectName(QString::fromUtf8("grade"));
+        grade->setGeometry(QRect(580, 30, 101, 22));
+        grade->setMaximum(100);
         stackedWidget->addWidget(page_4);
         page_5 = new QWidget();
         page_5->setObjectName(QString::fromUtf8("page_5"));
@@ -264,7 +281,7 @@ public:
 
         retranslateUi(StudentManagerSys);
 
-        stackedWidget->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(StudentManagerSys);
@@ -291,13 +308,24 @@ public:
         lEditClassName->setPlaceholderText(QCoreApplication::translate("StudentManagerSys", "\350\257\276\347\250\213\345\220\215", nullptr));
         btnClassGet->setText(QCoreApplication::translate("StudentManagerSys", "\346\237\245\350\257\242", nullptr));
         lEditClassID->setPlaceholderText(QCoreApplication::translate("StudentManagerSys", "\350\257\276\347\250\213\345\217\267", nullptr));
-        lineEdit_7->setText(QCoreApplication::translate("StudentManagerSys", "\345\255\246\345\217\267", nullptr));
-        lineEdit_8->setText(QCoreApplication::translate("StudentManagerSys", "\345\247\223\345\220\215", nullptr));
-        lineEdit_9->setText(QCoreApplication::translate("StudentManagerSys", "\350\257\276\347\250\213\345\220\215", nullptr));
-        pushButton_13->setText(QCoreApplication::translate("StudentManagerSys", "\346\237\245\350\257\242", nullptr));
-        pushButton_14->setText(QCoreApplication::translate("StudentManagerSys", "\344\277\256\346\224\271", nullptr));
-        pushButton_15->setText(QCoreApplication::translate("StudentManagerSys", "\345\242\236\345\212\240", nullptr));
-        pushButton_16->setText(QCoreApplication::translate("StudentManagerSys", "\345\210\240\351\231\244", nullptr));
+        studentID->setText(QString());
+        studentID->setPlaceholderText(QCoreApplication::translate("StudentManagerSys", "\345\255\246\345\217\267", nullptr));
+        studentName->setText(QString());
+        studentName->setPlaceholderText(QCoreApplication::translate("StudentManagerSys", "\345\255\246\347\224\237\345\247\223\345\220\215", nullptr));
+        className->setText(QString());
+        className->setPlaceholderText(QCoreApplication::translate("StudentManagerSys", "\350\257\276\347\250\213\345\220\215", nullptr));
+        btnGradeGet->setText(QCoreApplication::translate("StudentManagerSys", "\346\237\245\350\257\242", nullptr));
+        btnGradeUpdate->setText(QCoreApplication::translate("StudentManagerSys", "\344\277\256\346\224\271", nullptr));
+        btnGradeAdd->setText(QCoreApplication::translate("StudentManagerSys", "\345\242\236\345\212\240", nullptr));
+        btnGradeDel->setText(QCoreApplication::translate("StudentManagerSys", "\345\210\240\351\231\244", nullptr));
+        gradeCb->setItemText(0, QCoreApplication::translate("StudentManagerSys", "\345\205\250\351\203\250", nullptr));
+        gradeCb->setItemText(1, QCoreApplication::translate("StudentManagerSys", "\346\214\211\345\255\246\345\217\267", nullptr));
+        gradeCb->setItemText(2, QCoreApplication::translate("StudentManagerSys", "\346\214\211\345\255\246\347\224\237\345\247\223\345\220\215", nullptr));
+        gradeCb->setItemText(3, QCoreApplication::translate("StudentManagerSys", "\346\214\211\350\257\276\347\250\213\345\247\223\345\220\215", nullptr));
+        gradeCb->setItemText(4, QCoreApplication::translate("StudentManagerSys", "\346\214\211\350\200\203\350\257\225\346\227\266\351\227\264", nullptr));
+
+        label->setText(QCoreApplication::translate("StudentManagerSys", "\346\237\245\350\257\242\346\226\271\345\274\217\357\274\232", nullptr));
+        dateEdit->setDisplayFormat(QCoreApplication::translate("StudentManagerSys", "yyyy-M-d", nullptr));
         lineEdit->setPlaceholderText(QCoreApplication::translate("StudentManagerSys", "\350\257\276\347\250\213\345\220\215", nullptr));
         lineEdit_2->setPlaceholderText(QCoreApplication::translate("StudentManagerSys", "\350\257\276\347\250\213\345\217\267", nullptr));
         lineEdit_3->setPlaceholderText(QCoreApplication::translate("StudentManagerSys", "\350\200\201\345\270\210\345\220\215", nullptr));

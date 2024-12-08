@@ -13,6 +13,20 @@ class StudentManagerSys : public QMainWindow
     Q_OBJECT
 
 public:
+    enum userLevel
+    {
+        administrator = 1,
+        commonuser
+    };
+
+    enum findGradeMode
+    {
+      totalMode = 0,
+      studentIDMode,
+      studentNameMode,
+      classNameMode,
+      dateMode
+    };
     StudentManagerSys(QWidget *parent = nullptr);
     ~StudentManagerSys();
     void showLogin();
@@ -32,9 +46,22 @@ public:
     void classInfoShow();
     QList<QVariantList> getClassDataFromDB();
     bool findClassInfoFromDB(int classID, QString className, QString teacherName);
+    bool findClassInfoFromDB(QString className);
     bool deleteClassInfoToDB(int classID, QString className, QString teacherName);
     bool updateClassInfoToDB(int classID, QString className, QString teacherName);
     bool addClassInfoToDB(int classID, QString className, QString teacherName);
+
+    void gradeViewInit(int level);
+    void gradeInfoShow(QList<QVariantList> list);
+    QList<QVariantList> getGradeDataFromDB(enum findGradeMode,int studentID, QString studentName, QString className, QString date);
+    QList<QVariantList> getGradeDataFromDB();
+    bool findGradeInfoFromDB(int studentID, QString studentName, QString className, QString date, double grade);
+    bool findGradeInfoFromDB(int studentID, QString studentName, QString className);
+    bool deleteGradeInfoToDB(int studentID, QString studentName, QString className, QString date, double grade);
+    bool updateGradeInfoToDB(int studentID, QString studentName, QString className, QString date, double grade);
+    bool addGradeInfoToDB(int studentID, QString studentName, QString className, QString date, double grade);
+
+
 private slots:
     void onlogincheck(const QString &username,const QString &password,const int &level);
 
@@ -64,13 +91,21 @@ private slots:
 
     void on_btnClassGet_clicked();
 
+    void on_btnGradeGet_clicked();
+
+    void on_btnGradeUpdate_clicked();
+
+    void on_btnGradeAdd_clicked();
+
+    void on_btnGradeDel_clicked();
+
 private:
     Ui::StudentManagerSys *ui;
 
     login *login_t;
     DBOBase *db;
 
-    int userLevel = 2;
+    int userlevel = 1;
 
     QString db_name;
     QString table_name;
