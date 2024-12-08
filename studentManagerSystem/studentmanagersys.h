@@ -21,9 +21,31 @@ public:
     void menuBtnInit(int level);
     void studentViewInit(int level);
     void studentInfoShow();
-    void getStudentDataFromDB();
+    QList<QVariantList> getStudentDataFromDB();
+    bool findStudentInfoFromDB(int studentId, QString studentName, QString studentSex);
+    bool deleteStudentInfoToDB(int studentId, QString studentName, QString studentSex);
+    bool updateStudentInfoToDB(int studentId, QString studentName, QString studentSex);
+    bool addStudentInfoToDB(int studentId, QString studentName, QString studentSex);
 private slots:
     void onlogincheck(const QString &username,const QString &password,const int &level);
+
+    void on_btn1_clicked();
+
+    void on_btn2_clicked();
+
+    void on_btn3_clicked();
+
+    void on_btn4_clicked();
+
+    void on_btn5_clicked();
+
+    void on_pushButton_clicked();
+
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_2_clicked();
+
+    void on_pushButton_4_clicked();
 
 private:
     Ui::StudentManagerSys *ui;

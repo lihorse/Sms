@@ -490,6 +490,8 @@ int DBOBase::FindCount(const QString &tabName, const QString &strOptions)
 
 	QString strSql;
 	strSql = QString(QString("SELECT count(*) FROM %1 %2")).arg(tabName).arg(strOptions);
+
+    qDebug()<<strSql;
 	QSqlQuery sqlQuery(*ptrDB_);
 	if (!sqlQuery.exec(strSql) || !sqlQuery.next()) {
 		txError_ = ptrDB_->lastError().text();
