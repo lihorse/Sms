@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "login.h"
 #include "MysqlDBO.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class StudentManagerSys; }
 QT_END_NAMESPACE
@@ -61,7 +62,7 @@ public:
     bool updateGradeInfoToDB(int studentID, QString studentName, QString className, QString date, double grade);
     bool addGradeInfoToDB(int studentID, QString studentName, QString className, QString date, double grade);
 
-
+    void statsViewInit(int level);
 private slots:
     void onlogincheck(const QString &username,const QString &password,const int &level);
 

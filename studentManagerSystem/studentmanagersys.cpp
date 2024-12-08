@@ -6,6 +6,7 @@
 #include "qdatetime.h"
 #include <QMessageBox>
 #include <QList>
+#include "progressround.h"
 StudentManagerSys::StudentManagerSys(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::StudentManagerSys)
@@ -24,6 +25,7 @@ StudentManagerSys::StudentManagerSys(QWidget *parent)
     }
     this->dataBaseInit();
     this->InitForm();/*调试*/
+    this->statsViewInit(userlevel);
 }
 
 StudentManagerSys::~StudentManagerSys()
@@ -734,6 +736,30 @@ bool StudentManagerSys::addGradeInfoToDB(int studentID, QString studentName, QSt
     return db->AppendDataCustom("grade",qslist,qvlist);
 }
 
+void StudentManagerSys::statsViewInit(int level)
+{
+    //获取所有的课程名
+
+    QList<QVariantList> list = this->getClassDataFromDB();
+
+    qDebug()<<list;
+
+    for(auto item:list)
+    {
+        ui->statsCb->addItem(item.at(1).toString());
+    }
+    //饼图样式+自定义颜色组合
+    ui->progressRound5->setBgColor(QColor(255, 255, 255,255));
+    ui->progressRound5->setTextColor(QColor(255, 255, 255));
+    ui->progressRound5->setBaseColor(QColor(255, 107, 107));
+    ui->progressRound5->setInnerBgColor(QColor(180, 180, 180));
+    ui->progressRound5->setProgressColor(QColor(24, 189, 155));
+    ui->progressRound5->setBorderColor(QColor(24, 189, 155));
+
+    ui->progressRound5->setNullPosition(180);
+    ui->progressRound5->setBarStyle(ProgressRound::BarStyle_Pie);
+}
+
 void StudentManagerSys::on_btnGradeGet_clicked()
 {
 
@@ -776,3 +802,4 @@ void StudentManagerSys::on_btnGradeDel_clicked()
         this->gradeInfoShow(list);
     }
 }
+

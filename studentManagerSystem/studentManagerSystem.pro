@@ -21,6 +21,7 @@ SOURCES += \
     flatui.cpp \
     login.cpp \
     main.cpp \
+    progressround.cpp \
     studentmanagersys.cpp
 
 HEADERS += \
@@ -28,6 +29,7 @@ HEADERS += \
     MysqlDBO.h \
     flatui.h \
     login.h \
+    progressround.h \
     studentmanagersys.h
 
 FORMS += \
