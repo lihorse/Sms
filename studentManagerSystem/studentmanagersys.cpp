@@ -54,7 +54,8 @@ void StudentManagerSys::InitForm()
 {
     this->menuBtnInit(userLevel);
     this->studentViewInit(userLevel);
-    this->studentInfoShow();
+    this->classViewInit(userLevel);
+
 }
 
 void StudentManagerSys::menuBtnInit(int level)
@@ -93,6 +94,7 @@ void StudentManagerSys::studentViewInit(int level)
 
     //设置行高
     ui->tableWidget->setRowCount(300);
+    this->studentInfoShow();
 }
 
 void StudentManagerSys::studentInfoShow()
@@ -118,17 +120,7 @@ void StudentManagerSys::studentInfoShow()
 
 QList<QVariantList> StudentManagerSys::getStudentDataFromDB()
 {
-    int ret =  db->GetFieldSize("user");
-
-    qDebug()<<"GetFildSize:"<<ret;
-
-    QStringList list = db->GetFieldNames("student");
-
-    qDebug()<<list;
-
-    QList<QVariantList> getStudentInfo= db->GetDatas("student","*",NULL);
-
-    return getStudentInfo;
+    return db->GetDatas("student","*",NULL);
 }
 
 bool StudentManagerSys::findStudentInfoFromDB(int studentId, QString studentName, QString studentSex)
@@ -177,7 +169,6 @@ bool StudentManagerSys::updateStudentInfoToDB(int studentId, QString studentName
         return false;
     }
 
-    qDebug()<<"修改-------------";
     qslist.append("id");
     qslist.append("name");
     qslist.append("sex");
@@ -207,8 +198,6 @@ bool StudentManagerSys::addStudentInfoToDB(int studentId, QString studentName, Q
         qDebug("学生已经存在");
         return false;
     }
-
-    qDebug()<<"添加-------------";
     qslist.append("id");
     qslist.append("name");
     qslist.append("sex");
@@ -314,4 +303,188 @@ void StudentManagerSys::on_pushButton_4_clicked()/*删除学生信息*/
     }
 
     this->studentInfoShow();
+}
+
+void StudentManagerSys::classViewInit(int level)
+{
+    //设置列数和列宽
+    int width = qApp->desktop()->availableGeometry().width() - 120;
+    ui->classTbWidget->setColumnCount(3);
+    ui->classTbWidget->setColumnWidth(0, width * 0.06);
+    ui->classTbWidget->setColumnWidth(1, width * 0.10);
+    ui->classTbWidget->setColumnWidth(2, width * 0.06);
+    ui->classTbWidget->verticalHeader()->setDefaultSectionSize(25);
+
+    QStringList headText;
+    headText << "课程号" << "课程名" << "老师姓名";
+    ui->classTbWidget->setHorizontalHeaderLabels(headText);
+    ui->classTbWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->classTbWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->classTbWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->classTbWidget->setAlternatingRowColors(true);
+    ui->classTbWidget->verticalHeader()->setVisible(false);
+    ui->classTbWidget->horizontalHeader()->setStretchLastSection(true);
+
+    //设置行高
+    ui->classTbWidget->setRowCount(300);
+    this->classInfoShow();
+}
+
+void StudentManagerSys::classInfoShow()
+{
+    QList<QVariantList> list;
+    list = this->getClassDataFromDB();
+    int i = 0;
+    ui->classTbWidget->clearContents();
+    for(auto item:list)
+    {
+        ui->classTbWidget->setRowHeight(i, 24);
+
+        QTableWidgetItem *classID = new QTableWidgetItem(item.at(0).toString());
+        QTableWidgetItem *className = new QTableWidgetItem(item.at(1).toString());
+        QTableWidgetItem *teacher = new QTableWidgetItem(item.at(2).toString());
+
+        ui->classTbWidget->setItem(i, 0, classID);
+        ui->classTbWidget->setItem(i, 1, className);
+        ui->classTbWidget->setItem(i, 2, teacher);
+        i++;
+    }
+}
+
+QList<QVariantList> StudentManagerSys::getClassDataFromDB()
+{
+    return db->GetDatas("class","*",NULL);
+}
+
+bool StudentManagerSys::findClassInfoFromDB(int classID, QString className, QString teacherName)
+{
+    QString sql;
+    int ret;
+    sql = QString("WHERE id='%1';").arg(classID);
+
+    ret = db->FindCount("class",sql);
+
+    if(ret <= 0)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool StudentManagerSys::deleteClassInfoToDB(int classID, QString className, QString teacherName)
+{
+    /*先查找此人存在*/
+       if(!this->findClassInfoFromDB(ui->lEditClassID->text().toInt(),NULL,NULL))
+       {
+           qDebug("学生不存在");
+           return false;
+       }
+       qDebug()<<"删除";
+       db->DeleteData("class",QString("WHERE id='%1';").arg(classID));
+       return true;
+}
+
+bool StudentManagerSys::updateClassInfoToDB(int classID, QString className, QString teacherName)
+{
+    QStringList     qslist;
+    QVariantList    qvlist;
+    QString         strwhere;
+    if(classID < 0 || className.isEmpty() || teacherName.isEmpty())
+    {
+        qDebug("课程信息全部不能为空");
+        return false;
+    }
+    /*先查找此人存在*/
+    if(!this->findClassInfoFromDB(ui->lEditClassID->text().toInt(),NULL,NULL))
+    {
+        qDebug("课程不存在");
+        return false;
+    }
+
+    qslist.append("id");
+    qslist.append("name");
+    qslist.append("teacher");
+
+    qvlist.append(QString::number(classID));
+    qvlist.append(className);
+    qvlist.append(teacherName);
+
+    strwhere = QString("WHERE id='%1';").arg(classID);
+    db->UpdateData("class",qslist,qvlist,strwhere);
+    return true;
+}
+
+bool StudentManagerSys::addClassInfoToDB(int classID, QString className, QString teacherName)
+{
+    QStringList     qslist;
+    QVariantList    qvlist;
+
+    if(classID < 0 || className.isEmpty() || teacherName.isEmpty())
+    {
+        qDebug("学生信息全都不许为空");
+        return false;
+    }
+    /*先查找此人存在*/
+    if(this->findClassInfoFromDB(ui->lEditClassID->text().toInt(),NULL,NULL))
+    {
+        qDebug("课程信息已经存在");
+        return false;
+    }
+    qslist.append("id");
+    qslist.append("name");
+    qslist.append("teacher");
+
+    qvlist.append(QString::number(classID));
+    qvlist.append(className);
+    qvlist.append(teacherName);
+
+    db->AppendDataCustom("class",qslist,qvlist);
+    return true;
+}
+
+void StudentManagerSys::on_btnClassAdd_clicked()
+{
+    if(!this->addClassInfoToDB(ui->lEditClassID->text().toInt(),ui->lEditClassName->text(),ui->lEditTeacher->text()))
+    {
+        QMessageBox::warning(this,"info","课程信息添加失败");
+        return;
+    }
+
+    this->classInfoShow();
+
+}
+
+void StudentManagerSys::on_btnClassDel_clicked()
+{
+    if(!this->deleteClassInfoToDB(ui->lEditClassID->text().toInt(),ui->lEditClassName->text(),ui->lEditTeacher->text()))
+    {
+        QMessageBox::warning(this,"info","学生信息删除失败");
+        return;
+    }
+
+    this->classInfoShow();
+}
+
+void StudentManagerSys::on_btnClassUpdate_clicked()
+{
+    if(!this->updateClassInfoToDB(ui->lEditClassID->text().toInt(),ui->lEditClassName->text(),ui->lEditTeacher->text()))
+    {
+        QMessageBox::warning(this,"info","学生信息修改失败");
+        return;
+    }
+
+    this->classInfoShow();
+}
+
+void StudentManagerSys::on_btnClassGet_clicked()
+{
+    if(!this->findClassInfoFromDB(ui->lEditClassID->text().toInt(),ui->lEditClassName->text(),ui->lEditTeacher->text()))
+    {
+        QMessageBox::warning(this,"info","没有这个课程");
+    }
+    else
+    {
+        QMessageBox::warning(this,"info","有这个课程");
+    }
 }

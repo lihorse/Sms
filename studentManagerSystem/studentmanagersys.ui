@@ -39,7 +39,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page_1">
      <widget class="QTableWidget" name="tableWidget">
@@ -158,7 +158,7 @@
      </widget>
     </widget>
     <widget class="QWidget" name="page_3">
-     <widget class="QTableWidget" name="tableWidget_3">
+     <widget class="QTableWidget" name="classTbWidget">
       <property name="geometry">
        <rect>
         <x>390</x>
@@ -168,7 +168,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_9">
+     <widget class="QPushButton" name="btnClassUpdate">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -181,7 +181,7 @@
        <string>修改</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_10">
+     <widget class="QPushButton" name="btnClassAdd">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -194,7 +194,7 @@
        <string>增加</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_11">
+     <widget class="QPushButton" name="btnClassDel">
       <property name="geometry">
        <rect>
         <x>200</x>
@@ -207,10 +207,10 @@
        <string>删除</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_4">
+     <widget class="QLineEdit" name="lEditTeacher">
       <property name="geometry">
        <rect>
-        <x>270</x>
+        <x>260</x>
         <y>50</y>
         <width>113</width>
         <height>20</height>
@@ -220,10 +220,10 @@
        <string>老师名</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_5">
+     <widget class="QLineEdit" name="lEditClassName">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>140</x>
         <y>50</y>
         <width>113</width>
         <height>20</height>
@@ -233,7 +233,7 @@
        <string>课程名</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_12">
+     <widget class="QPushButton" name="btnClassGet">
       <property name="geometry">
        <rect>
         <x>200</x>
@@ -246,10 +246,10 @@
        <string>查询</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_6">
+     <widget class="QLineEdit" name="lEditClassID">
       <property name="geometry">
        <rect>
-        <x>150</x>
+        <x>20</x>
         <y>50</y>
         <width>113</width>
         <height>20</height>
