@@ -480,13 +480,23 @@
        <string>PushButton</string>
       </property>
      </widget>
-     <widget class="ProgressRound" name="progressRound5" native="true">
+     <widget class="QWidget" name="widget" native="true">
       <property name="geometry">
        <rect>
-        <x>200</x>
-        <y>150</y>
-        <width>150</width>
-        <height>101</height>
+        <x>350</x>
+        <y>190</y>
+        <width>421</width>
+        <height>331</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="widget_2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>80</y>
+        <width>341</width>
+        <height>291</height>
        </rect>
       </property>
      </widget>
@@ -715,14 +725,6 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>ProgressRound</class>
-   <extends>QWidget</extends>
-   <header>progressround.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

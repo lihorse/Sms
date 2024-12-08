@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include "login.h"
 #include "MysqlDBO.h"
-
+#include <QtCharts>
 QT_BEGIN_NAMESPACE
 namespace Ui { class StudentManagerSys; }
 QT_END_NAMESPACE
@@ -63,6 +63,9 @@ public:
     bool addGradeInfoToDB(int studentID, QString studentName, QString className, QString date, double grade);
 
     void statsViewInit(int level);
+    void statsHistogramViewInit(int level);
+private slots:
+    void onPieSeriesClicked(QPieSlice*);
 private slots:
     void onlogincheck(const QString &username,const QString &password,const int &level);
 
@@ -114,5 +117,8 @@ private:
     QString user_passwd;
     QString db_server_ip;
     int db_server_port;
+
+    //饼状图
+    QPieSeries *pie_series;
 };
 #endif // STUDENTMANAGERSYS_H

@@ -25,7 +25,6 @@ StudentManagerSys::StudentManagerSys(QWidget *parent)
     }
     this->dataBaseInit();
     this->InitForm();/*调试*/
-    this->statsViewInit(userlevel);
 }
 
 StudentManagerSys::~StudentManagerSys()
@@ -58,6 +57,8 @@ void StudentManagerSys::InitForm()
     this->studentViewInit(this->userlevel);
     this->classViewInit(this->userlevel);
     this->gradeViewInit(this->userlevel);
+    this->statsViewInit(userlevel);
+    this->statsHistogramViewInit(userlevel);
 }
 
 void StudentManagerSys::menuBtnInit(int level)
@@ -748,16 +749,124 @@ void StudentManagerSys::statsViewInit(int level)
     {
         ui->statsCb->addItem(item.at(1).toString());
     }
-    //饼图样式+自定义颜色组合
-    ui->progressRound5->setBgColor(QColor(255, 255, 255,255));
-    ui->progressRound5->setTextColor(QColor(255, 255, 255));
-    ui->progressRound5->setBaseColor(QColor(255, 107, 107));
-    ui->progressRound5->setInnerBgColor(QColor(180, 180, 180));
-    ui->progressRound5->setProgressColor(QColor(24, 189, 155));
-    ui->progressRound5->setBorderColor(QColor(24, 189, 155));
+    //饼状图
+       pie_series = new QPieSeries(this);
+       connect(pie_series, SIGNAL(clicked(QPieSlice*)), this, SLOT(onPieSeriesClicked(QPieSlice*)));
 
-    ui->progressRound5->setNullPosition(180);
-    ui->progressRound5->setBarStyle(ProgressRound::BarStyle_Pie);
+       //定义各扇形切片的颜色
+       static const QStringList list_pie_color = {
+           "#6480D6","#A1DC85","#FFAD25","#FF7777","#84D1EF","#4CB383",
+       };
+
+       //设置数据
+       QList<qreal> list_data = {3.1, 3.2, 3.3, 3.4, 3.5, 3.6};
+
+       //扇形
+       for (int i = 0; i < list_pie_color.size(); i++) {
+           QPieSlice* pie_slice = new QPieSlice(this);
+           pie_slice->setLabelVisible(true);
+           pie_slice->setValue(list_data[i]);
+           pie_slice->setLabel(QString::number(list_data[i]));
+           pie_slice->setColor(list_pie_color[i]);
+           pie_slice->setLabelColor(list_pie_color[i]);
+           pie_slice->setBorderColor(list_pie_color[i]);
+           pie_series->append(pie_slice);
+       }
+
+       //图表视图
+       QChart* chart = new QChart;
+       chart->setTitle("XXX统计饼图");
+       //设置暗黑主题
+       chart->setTheme(QChart::ChartThemeDark);
+
+       //标题字体
+       QFont font = qApp->font();
+       font.setBold(true);
+       font.setPointSize(16);
+       chart->setTitleFont(font);
+
+       //加入饼图
+       chart->addSeries(pie_series);
+       chart->setAnimationOptions(QChart::SeriesAnimations);
+
+       //图例
+       chart->legend()->setAlignment(Qt::AlignBottom);
+       chart->legend()->setBackgroundVisible(false);
+
+       //加入绘画视图
+       QChartView* chartView = new QChartView(this);
+       chartView->setRenderHint(QPainter::Antialiasing);
+       chartView->setChart(chart);
+
+       //加入布局
+       QVBoxLayout* layout = new QVBoxLayout;
+       layout->setContentsMargins(0, 0, 0, 0);
+       layout->addWidget(chartView);
+       ui->widget->setLayout(layout);
+}
+
+void StudentManagerSys::statsHistogramViewInit(int level)
+{
+    //![1]
+        QBarSet *set0 = new QBarSet("Jane");
+        QBarSet *set1 = new QBarSet("John");
+        QBarSet *set2 = new QBarSet("Axel");
+        QBarSet *set3 = new QBarSet("Mary");
+        QBarSet *set4 = new QBarSet("Samantha");
+
+        *set0 << 1 << 2 << 3 << 4 << 5 << 6;// Jane 6个月份的值
+        *set1 << 5 << 0 << 0 << 4 << 0 << 7;
+        *set2 << 3 << 5 << 8 << 19<< 8 << 5;
+        *set3 << 5 << 6 << 7 << 3 << 4 << 5;
+        *set4 << 9 << 7 << 5 << 3 << 1 << 2;
+    //![1]
+
+    //![2]
+        QBarSeries *series = new QBarSeries();
+        series->append(set0);
+        series->append(set1);
+        series->append(set2);
+        series->append(set3);
+        series->append(set4);
+
+    //![2]
+
+    //![3]
+        QChart *chart = new QChart();
+        chart->addSeries(series);
+        chart->setTitle("Simple barchart example");
+        chart->setAnimationOptions(QChart::SeriesAnimations);
+    //![3]
+
+    //![4]
+        QStringList categories;
+        categories << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun";
+        QBarCategoryAxis *axis = new QBarCategoryAxis();
+        axis->append(categories);
+        chart->createDefaultAxes();//创建默认的左侧的坐标轴（根据 QBarSet 设置的值）
+        chart->setAxisX(axis, series);//设置坐标轴
+    //![4]
+
+    //![5]
+        chart->legend()->setVisible(true); //设置图例为显示状态
+        chart->legend()->setAlignment(Qt::AlignBottom);//设置图例的显示位置在底部
+    //![5]
+
+    //![6]
+        QChartView *chartView2 = new QChartView(chart);
+        chartView2->setRenderHint(QPainter::Antialiasing);
+        //加入布局
+        QVBoxLayout* layout = new QVBoxLayout;
+        layout->setContentsMargins(0, 0, 0, 0);
+        layout->addWidget(chartView2);
+        ui->widget_2->setLayout(layout);
+}
+
+
+void StudentManagerSys::onPieSeriesClicked(QPieSlice *slice)
+{
+    qDebug()<<"dsadsa";
+    slice->setExploded(!slice->isExploded());
 }
 
 void StudentManagerSys::on_btnGradeGet_clicked()

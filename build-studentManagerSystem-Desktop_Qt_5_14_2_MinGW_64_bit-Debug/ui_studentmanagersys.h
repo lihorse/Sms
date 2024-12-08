@@ -25,7 +25,6 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QWidget>
-#include "progressround.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -68,7 +67,8 @@ public:
     QWidget *page_5;
     QComboBox *statsCb;
     QPushButton *pushButton_9;
-    ProgressRound *progressRound5;
+    QWidget *widget;
+    QWidget *widget_2;
     QWidget *page_2;
     QTableWidget *tableWidget_2;
     QLineEdit *lineEdit;
@@ -211,9 +211,12 @@ public:
         pushButton_9 = new QPushButton(page_5);
         pushButton_9->setObjectName(QString::fromUtf8("pushButton_9"));
         pushButton_9->setGeometry(QRect(210, 30, 75, 23));
-        progressRound5 = new ProgressRound(page_5);
-        progressRound5->setObjectName(QString::fromUtf8("progressRound5"));
-        progressRound5->setGeometry(QRect(200, 150, 150, 101));
+        widget = new QWidget(page_5);
+        widget->setObjectName(QString::fromUtf8("widget"));
+        widget->setGeometry(QRect(350, 190, 421, 331));
+        widget_2 = new QWidget(page_5);
+        widget_2->setObjectName(QString::fromUtf8("widget_2"));
+        widget_2->setGeometry(QRect(10, 80, 341, 291));
         stackedWidget->addWidget(page_5);
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
