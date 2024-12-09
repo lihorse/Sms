@@ -62,6 +62,15 @@ public:
     bool updateGradeInfoToDB(int studentID, QString studentName, QString className, QString date, double grade);
     bool addGradeInfoToDB(int studentID, QString studentName, QString className, QString date, double grade);
 
+    void userViewInit(int level);
+    void userInfoShow();
+    QList<QVariantList> getUserDataFromDB();
+    bool findUserInfoFromDB(QString usrName, QString usrPasswd, int usrLevel);
+    bool findUserInfoFromDB(QString usrName);
+    bool deleteUserInfoToDB(QString usrName, QString usrPasswd, int usrLevel);
+    bool updateUserInfoToDB(QString usrName, QString usrPasswd, int usrLevel);
+    bool addUserInfoToDB(QString usrName, QString usrPasswd, int usrLevel);
+
     void statsViewInit(int level);
     void statsHistogramViewInit(int level);
 private slots:
@@ -102,6 +111,14 @@ private slots:
     void on_btnGradeAdd_clicked();
 
     void on_btnGradeDel_clicked();
+
+    void on_btnUserGet_clicked();
+
+    void on_btnUserDel_clicked();
+
+    void on_btnUserAdd_clicked();
+
+    void on_btnUserUp_clicked();
 
 private:
     Ui::StudentManagerSys *ui;

@@ -39,7 +39,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="page_1">
      <widget class="QTableWidget" name="tableWidget">
@@ -502,60 +502,47 @@
      </widget>
     </widget>
     <widget class="QWidget" name="page_2">
-     <widget class="QTableWidget" name="tableWidget_2">
+     <widget class="QTableWidget" name="userTbWidget">
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>20</x>
+        <y>90</y>
+        <width>601</width>
+        <height>291</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lEditUserName">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>113</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="placeholderText">
+       <string>用户名</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lEditUserPasswd">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>10</y>
+        <width>113</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="placeholderText">
+       <string>用户密码</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnUserAdd">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
         <y>40</y>
-        <width>341</width>
-        <height>251</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEdit">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>70</y>
-        <width>113</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="placeholderText">
-       <string>课程名</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEdit_2">
-      <property name="geometry">
-       <rect>
-        <x>160</x>
-        <y>70</y>
-        <width>113</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="placeholderText">
-       <string>课程号</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEdit_3">
-      <property name="geometry">
-       <rect>
-        <x>280</x>
-        <y>70</y>
-        <width>113</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="placeholderText">
-       <string>老师名</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_5">
-      <property name="geometry">
-       <rect>
-        <x>40</x>
-        <y>130</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -564,11 +551,11 @@
        <string>增加</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_6">
+     <widget class="QPushButton" name="btnUserDel">
       <property name="geometry">
        <rect>
-        <x>210</x>
-        <y>130</y>
+        <x>110</x>
+        <y>40</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -577,11 +564,11 @@
        <string>删除</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_7">
+     <widget class="QPushButton" name="btnUserUp">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>190</y>
+        <x>300</x>
+        <y>40</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -590,11 +577,11 @@
        <string>修改</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_8">
+     <widget class="QPushButton" name="btnUserGet">
       <property name="geometry">
        <rect>
-        <x>210</x>
-        <y>190</y>
+        <x>20</x>
+        <y>40</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -602,6 +589,26 @@
       <property name="text">
        <string>查询</string>
       </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_2">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>10</y>
+        <width>81</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>管理用户</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>普通用户</string>
+       </property>
+      </item>
      </widget>
     </widget>
    </widget>

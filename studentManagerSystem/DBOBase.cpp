@@ -446,7 +446,7 @@ bool DBOBase::UpdateData(const QString &tabName, const QStringList &fieldList, c
 		txError_ = QString("field and data miss match");
 		return false;
 	}
-
+    qDebug()<<"update";
 	QString strSql;
 	strSql = QString(QString("UPDATE %1 SET ")).arg(tabName);
 	QString strVal;

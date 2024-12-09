@@ -59,6 +59,7 @@ void StudentManagerSys::InitForm()
     this->gradeViewInit(this->userlevel);
     this->statsViewInit(userlevel);
     this->statsHistogramViewInit(userlevel);
+    this->userViewInit(userlevel);
 }
 
 void StudentManagerSys::menuBtnInit(int level)
@@ -737,13 +738,147 @@ bool StudentManagerSys::addGradeInfoToDB(int studentID, QString studentName, QSt
     return db->AppendDataCustom("grade",qslist,qvlist);
 }
 
+void StudentManagerSys::userViewInit(int level)
+{
+    //设置列数和列宽
+    int width = qApp->desktop()->availableGeometry().width() - 120;
+    ui->userTbWidget->setColumnCount(3);
+    ui->userTbWidget->setColumnWidth(0, width * 0.06);
+    ui->userTbWidget->setColumnWidth(1, width * 0.06);
+    ui->userTbWidget->setColumnWidth(2, width * 0.06);
+    ui->userTbWidget->verticalHeader()->setDefaultSectionSize(25);
+
+    QStringList headText;
+    headText << "用户名" << "用户密码" << "用户等级";
+    ui->userTbWidget->setHorizontalHeaderLabels(headText);
+    ui->userTbWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->userTbWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->userTbWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->userTbWidget->setAlternatingRowColors(true);
+    ui->userTbWidget->verticalHeader()->setVisible(false);
+    ui->userTbWidget->horizontalHeader()->setStretchLastSection(true);
+
+    //设置行高
+    ui->userTbWidget->setRowCount(300);
+    this->userInfoShow();
+}
+
+void StudentManagerSys::userInfoShow()
+{
+    QList<QVariantList> list;
+    list = this->getUserDataFromDB();
+    int i = 0;
+    ui->userTbWidget->clearContents();
+    for(auto item:list)
+    {
+        ui->userTbWidget->setRowHeight(i, 24);
+
+        QTableWidgetItem *username = new QTableWidgetItem(item.at(0).toString());
+        QTableWidgetItem *password = new QTableWidgetItem(item.at(1).toString());
+        QTableWidgetItem *level = new QTableWidgetItem(item.at(3).toInt() == administrator ? "管理员用户": "普通用户");
+
+        ui->userTbWidget->setItem(i, 0, username);
+        ui->userTbWidget->setItem(i, 1, password);
+        ui->userTbWidget->setItem(i, 2, level);
+        i++;
+    }
+}
+
+QList<QVariantList> StudentManagerSys::getUserDataFromDB()
+{
+    return db->GetDatas("user","*",NULL);
+}
+
+bool StudentManagerSys::findUserInfoFromDB(QString usrName, QString usrPasswd, int usrLevel)
+{
+    QString sql;
+    int ret;
+    sql = QString("WHERE username='%1' AND password='%2' AND level='%3';").arg(usrName).arg(usrPasswd).arg(usrLevel);
+
+    ret = db->FindCount("user",sql);
+
+    return ret ? true : false;
+}
+
+bool StudentManagerSys::findUserInfoFromDB(QString usrName)
+{
+    QString sql;
+    int ret;
+    sql = QString("WHERE username='%1';").arg(usrName);
+
+    ret = db->FindCount("user",sql);
+
+    return ret ? true : false;
+}
+
+bool StudentManagerSys::deleteUserInfoToDB(QString usrName, QString usrPasswd, int usrLevel)
+{
+    if(!this->findUserInfoFromDB(ui->lEditUserName->text(),ui->lEditUserPasswd->text(),ui->comboBox_2->currentIndex()+1))
+    {
+        QMessageBox::warning(this,"info","用户不存在");
+        return false;
+    }
+
+    return db->DeleteData("user",QString("WHERE username='%1' AND password='%2' AND level='%3';").arg(usrName).arg(usrPasswd).arg(usrLevel));
+}
+
+bool StudentManagerSys::updateUserInfoToDB(QString usrName, QString usrPasswd, int usrLevel)
+{
+    QStringList     qslist;
+    QVariantList    qvlist;
+    QString         strwhere;
+
+    /*先查找此人存在*/
+    if(!this->findUserInfoFromDB(ui->lEditUserName->text()))
+    {
+        QMessageBox::warning(this,"info","用户名不存在");
+        return false;
+    }
+
+    qslist.append("username");
+    qslist.append("password");
+    qslist.append("level");
+
+
+    qvlist.append(usrName);
+    qvlist.append(usrPasswd);
+    qvlist.append(usrLevel);
+
+    strwhere = QString("WHERE username='%1';").arg(usrName);
+
+
+    return db->UpdateData("user",qslist,qvlist,strwhere);
+}
+
+bool StudentManagerSys::addUserInfoToDB(QString usrName, QString usrPasswd, int usrLevel)
+{
+    QStringList     qslist;
+    QVariantList    qvlist;
+
+    if(this->findUserInfoFromDB(ui->lEditUserName->text()))
+    {
+        QMessageBox::warning(this,"info","用户名已经存在");
+        return false;
+    }
+
+       qslist.append("username");
+       qslist.append("password");
+       qslist.append("level");
+
+
+       qvlist.append(usrName);
+       qvlist.append(usrPasswd);
+       qvlist.append(usrLevel);
+
+    return db->AppendDataCustom("user",qslist,qvlist);
+}
+
 void StudentManagerSys::statsViewInit(int level)
 {
     //获取所有的课程名
 
     QList<QVariantList> list = this->getClassDataFromDB();
 
-    qDebug()<<list;
 
     for(auto item:list)
     {
@@ -865,7 +1000,6 @@ void StudentManagerSys::statsHistogramViewInit(int level)
 
 void StudentManagerSys::onPieSeriesClicked(QPieSlice *slice)
 {
-    qDebug()<<"dsadsa";
     slice->setExploded(!slice->isExploded());
 }
 
@@ -878,7 +1012,6 @@ void StudentManagerSys::on_btnGradeGet_clicked()
     qDebug()<<getGradeMode;
 
     QList<QVariantList> list = this->getGradeDataFromDB(getGradeMode,ui->studentID->text().toInt(),ui->studentName->text(),ui->className->text(),ui->dateEdit->text());
-    qDebug()<<list;
 
     this->gradeInfoShow(list);
 }
@@ -912,3 +1045,55 @@ void StudentManagerSys::on_btnGradeDel_clicked()
     }
 }
 
+
+void StudentManagerSys::on_btnUserGet_clicked()
+{
+    if(this->findUserInfoFromDB(ui->lEditUserName->text(),ui->lEditUserPasswd->text(),ui->comboBox_2->currentIndex()+1))
+    {
+        QMessageBox::warning(this,"info","账号存在");
+    }
+    else
+    {
+        QMessageBox::warning(this,"info","账号不存在");
+    }
+    this->userInfoShow();
+}
+
+void StudentManagerSys::on_btnUserDel_clicked()
+{
+       if(this->deleteUserInfoToDB(ui->lEditUserName->text(),ui->lEditUserPasswd->text(),ui->comboBox_2->currentIndex()+1))
+       {
+           QMessageBox::warning(this,"info","删除成功");
+       }
+       else
+       {
+           QMessageBox::warning(this,"info","删除失败");
+       }
+       this->userInfoShow();
+}
+
+void StudentManagerSys::on_btnUserAdd_clicked()
+{
+       if(this->addUserInfoToDB(ui->lEditUserName->text(),ui->lEditUserPasswd->text(),ui->comboBox_2->currentIndex()+1))
+       {
+           QMessageBox::warning(this,"info","添加成功");
+       }
+       else
+       {
+           QMessageBox::warning(this,"info","添加失败");
+       }
+       this->userInfoShow();
+}
+
+void StudentManagerSys::on_btnUserUp_clicked()
+{
+       if(this->updateUserInfoToDB(ui->lEditUserName->text(),ui->lEditUserPasswd->text(),ui->comboBox_2->currentIndex()+1))
+       {
+           QMessageBox::warning(this,"info","修改成功");
+       }
+       else
+       {
+           QMessageBox::warning(this,"info","修改失败");
+       }
+       this->userInfoShow();
+}
